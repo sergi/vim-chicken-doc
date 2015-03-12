@@ -5,12 +5,25 @@ chicken scheme in vim.
 
 ### Installation
 
-vim-chicken-doc is an ftplugin and has to be installed in your ftplugin directory.
-Installing it in the plugin directory won't work. Installing it with vundle or
-pathogen will work too.
+vim-chicken-doc is an ftplugin and has to be installed in your ftplugin
+directory. Installing it with vundle or pathogen will work too. Installing
+it in the plugin directory won't work
 
-Note that you need a line like the following in your .vimrc file:
-  `filetype plugin on`
+In order for this plugin to work, you need to install the `chicken-doc` egg,
+along with a tarball with the latest documentation:
+
+```
+sudo chicken-install chicken-doc
+echo "(use chicken-doc)" | tee -a "$HOME/.csirc"
+cd `csi -p "(chicken-home)"`
+curl http://3e8.org/pub/chicken-doc/chicken-doc-repo.tgz | tar zx
+```
+
+Please note that depending on the platform you are, you might need to be root
+for the above commands to work.
+
+Also note that you need a line like the following in your .vimrc file:
+`filetype plugin on`
 
 ### Usage
 
