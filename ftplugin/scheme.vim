@@ -77,7 +77,6 @@ function! s:ShowChickenDoc(name)
     " Remove function/method arguments
     let s:name2 = substitute(a:name, '(.*', '', 'g' )
     " Remove all colons
-    let s:name2 = substitute(s:name2, ':', '', 'g' )
     let s:cmd = g:cdoc_cmd . ' ' . shellescape(s:name2)
 
     if &verbose
@@ -109,28 +108,16 @@ endfunction
 
 function! s:ExpandModulePath()
     " Extract the 'word' at the cursor, expanding leftwards across identifiers
-    " and the . operator, and rightwards across the identifier only.
-    "
-    " For example:
-    "   import xml.dom.minidom
-    "           ^   !
-    "
-    " With the cursor at ^ this returns 'xml'; at ! it returns 'xml.dom'.
-    let l:line = getline(".")
-    let l:pre = l:line[:col(".") - 1]
-    let l:suf = l:line[col("."):]
+    " and the # operator, and rightwards across the identifier only.
+    let l:line = getline("#")
+    let l:pre = l:line[:col("#") - 1]
+    let l:suf = l:line[col("#"):]
     return matchstr(pre, "[A-Za-z0-9_.]*$") . matchstr(suf, "^[A-Za-z0-9_]*")
 endfunction
 
 " Mappings
 function! s:PerformMappings()
-    nnoremap <silent> <buffer> <Leader>pw :call <SID>ShowChickenDoc('<C-R><C-W>', 1)<CR>
-    nnoremap <silent> <buffer> <Leader>pW :call <SID>ShowChickenDoc('<C-R><C-A>', 1)<CR>
-    nnoremap <silent> <buffer> <Leader>pk :call <SID>ShowChickenDoc('<C-R><C-W>', 0)<CR>
-    nnoremap <silent> <buffer> <Leader>pK :call <SID>ShowChickenDoc('<C-R><C-A>', 0)<CR>
-
-    " remap the K (or 'help') key
-    nnoremap <silent> <buffer> K :call <SID>ShowChickenDoc(<SID>ExpandModulePath(), 1)<CR>
+    nnoremap <silent> <buffer> <Leader>cw :call <SID>ShowChickenDoc('<C-R><C-W>')<CR>
 endfunction
 
 if g:cdoc_perform_mappings
